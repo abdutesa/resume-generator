@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Generator</title>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<h2>Resume Generator</h2>
+
+<input id="name" placeholder="Full Name"><br><br>
+<input id="job" placeholder="Job Title"><br><br>
+<textarea id="skills" placeholder="Skills (comma separated)"></textarea><br><br>
+<textarea id="experience" placeholder="Experience"></textarea><br><br>
+
+<button onclick="generateResume()">Generate Resume</button>
+<button onclick="downloadPDF()">Download PDF</button>
+
+<hr>
+
+<pre id="resumePreview"></pre>
+
+<script>
+function generateResume() {
+    const name = document.getElementById("name").value;
+    const job = document.getElementById("job").value;
+    const skills = document.getElementById("skills").value;
+    const experience = document.getElementById("experience").value;
+
+    document.getElementById("resumePreview").innerText =
+        "Name: " + name + "\n" +
+        "Job Title: " + job + "\n\n" +
+        "Skills:\n" + skills + "\n\n" +
+        "Experience:\n" + experience;
+}
+
+function downloadPDF() {
+    const text = document.getElementById("resumePreview").innerText;
+
+    if (!text) {
+        alert("Generate resume first!");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const lines = doc.splitTextToSize(text, 180);
+    doc.text(lines, 10, 10);
+
+    doc.save("Resume.pdf");
+}
+</script>
+
+</body>
+</html>
